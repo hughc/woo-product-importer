@@ -31,9 +31,9 @@
     class WebPres_Woo_Product_Importer {
         
         public function __construct() {
-            add_action( 'init', array( 'WebPres_Woo_Product_Importer', 'translations' ), 1 );
-            add_action('admin_menu', array('WebPres_Woo_Product_Importer', 'admin_menu'));
-            add_action('wp_ajax_woo-product-importer-ajax', array('WebPres_Woo_Product_Importer', 'render_ajax_action'));
+            add_action('init', array( &$this, 'translations' ), 1 );
+            add_action('admin_menu', array( &$this, 'admin_menu') );
+            add_action('wp_ajax_woo-product-importer-ajax', array( &$this, 'render_ajax_action') );
         }
 
         public function translations() {
@@ -41,7 +41,13 @@
         }
 
         public function admin_menu() {
-            add_management_page( __( 'Woo Product Importer', 'woo-product-importer' ), __( 'Woo Product Importer', 'woo-product-importer' ), 'manage_options', 'woo-product-importer', array('WebPres_Woo_Product_Importer', 'render_admin_action'));
+            add_management_page( 
+                __('Woo Product Importer', 'woo-product-importer'), 
+                __('Woo Product Importer', 'woo-product-importer'), 
+                'manage_options',
+                'woo-product-importer', 
+                array( &$this, 'render_admin_action' )
+            );
         }
         
         public function render_admin_action() {

@@ -542,10 +542,16 @@
 
                         //If our 'image' file doesn't have an image file extension, skip it.
                         $allowed_extensions = array('jpg', 'jpeg', 'gif', 'png');
-                        $image_ext = strtolower($pathinfo['extension']);
-                        if(!in_array($image_ext, $allowed_extensions)) {
-                            $new_post_errors[] = sprintf( __( 'A valid file extension wasn\'t found in %s. Extension found was %s. Allowed extensions are: %s.', 'woo-product-importer' ), $image_url, $image_ext, implode( ',', $allowed_extensions ) );
-                            continue;
+                        if (array_key_exists('extension', $pathinfo)) {
+                            $image_ext = strtolower($pathinfo['extension']);
+                            if(!in_array($image_ext, $allowed_extensions)) {
+                                $new_post_errors[] = sprintf( __( 'A valid file extension wasn\'t found in %s. Extension found was %s. Allowed extensions are: %s.', 'woo-product-importer' ), $image_url, $image_ext, implode( ',', $allowed_extensions ) );
+                                continue;
+                            }
+                        } else {
+                                $new_post_errors[] = sprintf( __( 'No file extension was found in %s.', 'woo-product-importer' ), $image_url );
+                                continue;
+
                         }
 
                         //figure out where we're putting this thing.
